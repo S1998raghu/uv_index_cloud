@@ -1,0 +1,36 @@
+name : Deploy frontend and backend
+on:
+  push:
+    branches:
+      - main
+  
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2 
+
+      - name:  setup google cloud sdk
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          version: 'latest'
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+      
+      - name: configure docker
+        run: |
+          docker build  -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/backend:latest 
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/backend:latest
+
+
+          
+      - name: Deploy backend to cloud run
+        run: |
+          gcloud run deploy uv-cloud-service \
+            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/backend:latest \
+            --platform managed \
+            --region us-central1 \
+            --allow-unauthenticated \
+            --project ${{ secrets.GCP_PROJECT_ID }} \
+            --quiet
