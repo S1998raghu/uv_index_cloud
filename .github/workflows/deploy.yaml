@@ -20,7 +20,7 @@ jobs:
       
       - name: configure docker
         run: |
-          docker build  -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/backend:latest .
+          docker build  -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/backend:latest backend/.
           docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/backend:latest
 
 
