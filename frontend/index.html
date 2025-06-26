@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>UV Index Checker</title>
+</head>
+<body>
+  <h2>Check UV Index</h2>
+
+  <label for="lat">Latitude:</label>
+  <input type="number" id="lat" step="any"><br><br>
+
+  <label for="lng">Longitude:</label>
+  <input type="number" id="lng" step="any"><br><br>
+
+  <button onclick="getUV()">Get UV Index</button>
+
+  <h3>Result:</h3>
+  <pre id="output"></pre>
+
+  <script>
+    async function getUV() {
+      const lat = parseFloat(document.getElementById("lat").value);
+      const lng = parseFloat(document.getElementById("lng").value);
+
+      const output = document.getElementById("output");
+      output.textContent = "Fetching...";
+
+      try {
+        const response = await fetch('https://your-cloud-run-url.a.run.app/UV', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ lat, lng })
+        });
+
+        const data = await response.json();
+        output.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        output.textContent = 'Error: ' + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
