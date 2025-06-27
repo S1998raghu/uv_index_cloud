@@ -34,6 +34,7 @@ jobs:
         run: |
           gcloud run deploy uv-container \
             --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/uv-container/backend:latest \
+            --service-account my_uv_sa@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com \
             --platform managed \
             --region us-central1 \
             --allow-unauthenticated \
