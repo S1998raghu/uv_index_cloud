@@ -1,3 +1,4 @@
+
 FROM python:3.11-slim
 
 
@@ -11,3 +12,4 @@ COPY . .
 EXPOSE 8000
 
 CMD ["python", "main.py"]
+    
