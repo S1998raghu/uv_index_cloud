@@ -3,13 +3,14 @@ on:
   push:
     branches:
       - main
-  permissions: # This section defines the permissions for the workflow especially for OIDC token request in this case
-      contents: 'read'
-      id-token: 'write'
+ 
   
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions: # This section defines the permissions for the workflow especially for OIDC token request in this case
+      contents: 'read'
+      id-token: 'write'
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
