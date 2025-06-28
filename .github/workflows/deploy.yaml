@@ -30,17 +30,17 @@ jobs:
 
       - name: configure artifact registry
         run: |
-          gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+          gcloud auth configure-docker gcr.io
 
       - name: configure docker
         run: |
-          docker build -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/uv-container/backend:latest -f backend/Dockerfile backend/
-          docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/uv-container/backend:latest
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/uv-container/backend:latest -f backend/Dockerfile backend/
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/uv-container/backend:latest
 
       - name: Deploy backend to cloud run
         run: |
           gcloud run deploy uv-container \
-            --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/uv-container/backend:latest \
+            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/uv-container/backend:latest \
             --platform managed \
             --region us-central1 \
             --allow-unauthenticated \
