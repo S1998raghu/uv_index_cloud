@@ -6,7 +6,7 @@ from datetime import datetime
 
 
 ENDPOINT = 'https://api.openuv.io/api/v1/uv?lat=:lat&lng=:lng&alt=:alt&dt=:dt'
-print("Received a request")
+print("Received a request..")
 app = Flask(__name__)
 CORS(app)
 @app.route('/UV', methods=['POST'])
