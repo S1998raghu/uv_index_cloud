@@ -21,27 +21,23 @@ jobs:
           token_format: 'access_token'
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
- 
-      - name:  setup google cloud sdk
-        uses: google-github-actions/setup-gcloud@v2
-        with:
-          version: 'latest'
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
 
       - name: configure artifact registry
         run: |
-          gcloud auth configure-docker gcr.io
+          gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+          gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
 
       - name: configure docker
         run: |
-          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/uv-container/backend:latest -f backend/Dockerfile backend/
-          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/uv-container/backend:latest
+          docker build -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/uv-container/backend:latest -f backend/Dockerfile backend/
+          docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/uv-container/backend:latest
 
       - name: Deploy backend to cloud run
         run: |
           gcloud run deploy uv-container \
-            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/uv-container/backend:latest \
+            --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/uv-container/backend:latest \
             --platform managed \
             --region us-central1 \
             --allow-unauthenticated \
+            --project ${{ secrets.GCP_PROJECT_ID }} \
             --quiet
