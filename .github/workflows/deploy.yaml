@@ -22,12 +22,12 @@ jobs:
           workload_identity_provider: projects/939819617751/locations/global/workloadIdentityPools/uv-github/providers/github
           service_account: my-uv-sa@webproject98.iam.gserviceaccount.com
 
-      - name: configure artifact registry
-        run: |
-          gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
-          gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
-          gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://us-central1-docker.pkg.dev
-
+      - name: Configure Docker for Artifact Registry
+        uses: docker/login-action@v3
+        with:
+          registry: us-central1-docker.pkg.dev
+          username: oauth2accesstoken
+          password: ${{ steps.auth.outputs.access_token }}
 
       - name: configure docker
         run: |
