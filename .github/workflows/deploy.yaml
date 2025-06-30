@@ -36,13 +36,12 @@ jobs:
       - name : push docker image
         run: |
           docker push us-central1-docker.pkg.dev/webproject98/uv-container/backend:latest
-
-      - name: Deploy backend to cloud run
+      - name: Deploy backend to Cloud Run
         run: |
           gcloud run deploy uv-container \
             --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/uv-container/backend:latest \
-            --platform managed \
-            --region us-central1 \
+            --platform=managed \
+            --region=us-central1 \
             --allow-unauthenticated \
-            --project ${{ secrets.GCP_PROJECT_ID }} \
+            --project=${{ secrets.GCP_PROJECT_ID }} \
             --quiet
