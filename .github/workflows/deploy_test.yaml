@@ -19,17 +19,22 @@ jobs:
         name: Authenticate with GCP via Workload Identity Federation
         uses: google-github-actions/auth@v2
         with:
-         project_id: ${{ secrets.GCP_PROJECT_ID }}
-         service_account_key: ${{ secrets.GCP_SA_KEY }}
+          token_format: 'access_token'
+          workload_identity_provider: projects/939819617751/locations/global/workloadIdentityPools/uv-github/providers/github
+          service_account: my-uv-sa@webproject98.iam.gserviceaccount.com
 
       - name: Configure Docker for Artifact Registry
-        run: |
-          gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+        uses: docker/login-action@v3
+        with:
+          registry: us-central1-docker.pkg.dev
+          username: oauth2accesstoken
+          password: ${{ steps.auth.outputs.access_token }}
 
-      - name: Build and push Docker image
+      - name: configure docker
         run: |
-          docker build -t us-central1-docker.pkg.dev/webproject98/uv-container/backend:latest -f backend/Dockerfile backend/
-          docker push us-central1-docker.pkg.dev/webproject98/uv-container/backend:latest
+
+          docker build -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/uv-container/backend:latest -f backend/Dockerfile backend/
+          docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/uv-container/backend:latest
 
       - name: Deploy backend to cloud run
         run: |
