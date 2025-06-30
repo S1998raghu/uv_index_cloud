@@ -16,12 +16,12 @@ jobs:
         uses: actions/checkout@v3
 
       
-      - name: setup gcloud
-        uses: google-github-actions/setup-gcloud@v2
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v2
         with:
-         project_id: ${{ secrets.GCP_PROJECT_ID }}
-         service_account_key: ${{ secrets.GCP_SA_KEY }}
-
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          
       - name: Configure Docker for Artifact Registry
         run: |
           gcloud auth configure-docker  --quiet
