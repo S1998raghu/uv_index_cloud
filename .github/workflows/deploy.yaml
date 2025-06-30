@@ -26,9 +26,12 @@ jobs:
         run: |
           gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
           gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
+          gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://us-central1-docker.pkg.dev
+
 
       - name: configure docker
         run: |
+
           docker build -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/uv-container/backend:latest -f backend/Dockerfile backend/
           docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/uv-container/backend:latest
 
