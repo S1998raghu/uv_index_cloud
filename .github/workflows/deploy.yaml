@@ -17,19 +17,19 @@ jobs:
 
       
       - name: setup gcloud
-        uses: google-github-actions/auth@v2
+        uses: google-github-actions/setup-gcloud@v2
         with:
          project_id: ${{ secrets.GCP_PROJECT_ID }}
-         credentials_json: ${{ secrets.GCP_USER_KEY }}
+         service_account_key: ${{ secrets.GCP_SA_KEY }}
 
       - name: Configure Docker for Artifact Registry
         run: |
-          gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+          gcloud auth configure-docker  --quiet
 
       - name: Build and push Docker image
         run: |
-          docker build -t us-central1-docker.pkg.dev/webproject98/uv-container/backend1:latest -f backend/Dockerfile backend/
-          docker push us-central1-docker.pkg.dev/webproject98/uv-container/backend1:latest
+          docker build -t us-central1-docker.pkg.dev/webproject98/uv-container/backend:latest -f backend/Dockerfile backend/
+          docker push us-central1-docker.pkg.dev/webproject98/uv-container/backend:latest
 
       - name: Deploy backend to cloud run
         run: |
