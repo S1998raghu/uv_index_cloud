@@ -19,8 +19,8 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           token_format: 'access_token'
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          workload_identity_provider: projects/939819617751/locations/global/workloadIdentityPools/uv-github/providers/github
+          service_account: my-uv-sa@webproject98.iam.gserviceaccount.com
 
       - name: configure artifact registry
         run: |
