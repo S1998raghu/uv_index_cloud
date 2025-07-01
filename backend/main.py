@@ -5,7 +5,7 @@ from datetime import datetime
 
 
 
-ENDPOINT = 'https://api.openuv.io/api/v1/uv?lat=:lat&lng=:lng&alt=:alt&dt=:dt'
+ENDPOINT = 'https://api.openuv.io/api/v1/uv'
 print("Received a request..")
 app = Flask(__name__)
 CORS(app)
@@ -22,7 +22,7 @@ def uv():
             'lat': lat,
             'lng': lng,
             'alt': 0,  # Default altitude
-            'dt': datetime.now  # Default date-time
+            'dt': datetime.now()  # Default date-time
         }
         if not lat or not lng:
             return jsonify({'error': 'Latitude and Longitude are required'}), 400
@@ -41,6 +41,7 @@ def uv():
         return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
    
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 8080))
+    app.run(host='0.0.0.0', port=port, debug=True)
 # This code is a Flask application that provides an endpoint to fetch UV index data based on latitude and longitude.
 # It uses the OpenUV API to get the UV index and requires an API key for access. The endpoint is designed to handle POST requests with JSON data containing latitude and longitude.
