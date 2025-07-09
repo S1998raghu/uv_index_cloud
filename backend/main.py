@@ -10,9 +10,11 @@ ENDPOINT = 'https://api.openuv.io/api/v1/uv'
 print("Received a request..")
 app = Flask(__name__)
 CORS(app, origins=['*'], allow_headers=['Content-Type', 'x-access-token'])
-@app.route('/UV', methods=['POST'])
+@app.route('/UV', methods=['POST', 'OPTIONS'])
 def uv():
-
+    if request.method == 'OPTIONS':
+        return '', 200
+        
     try:
         api_key = request.headers['x-access-token']
         data = request.get_json()
