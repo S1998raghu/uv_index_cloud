@@ -15,7 +15,7 @@ def uv():
 
     try:
         api_key = request.headers['x-access-token']
-        data = requests.get_json()
+        data = request.get_json()
         lat = data.get('lat')
         lng = data.get('lng')
 

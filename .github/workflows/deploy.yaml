@@ -41,5 +41,5 @@ jobs:
           service: uv-backend
           image: us-central1-docker.pkg.dev/webproject98/uv-container/backend:latest
           region: us-central1
-          allow_unauthenticated: true
+      
           project_id: webproject98
