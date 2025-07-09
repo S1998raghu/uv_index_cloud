@@ -9,7 +9,7 @@ from datetime import datetime
 ENDPOINT = 'https://api.openuv.io/api/v1/uv'
 print("Received a request..")
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=['*'], allow_headers=['Content-Type', 'x-access-token'])
 @app.route('/UV', methods=['POST'])
 def uv():
 
