@@ -16,7 +16,6 @@ def uv():
         return '', 200
         
     try:
-        api_key = request.headers['x-access-token']
         data = request.get_json()
         lat = data.get('lat')
         lng = data.get('lng')
@@ -29,10 +28,9 @@ def uv():
         }
         if not lat or not lng:
             return jsonify({'error': 'Latitude and Longitude are required'}), 400
-        if not api_key:
-            return jsonify({'error': 'API key is required'}), 401
+       
         headers = {
-            'x-access-token': api_key
+            'x-access-token': 'openuv-aros56rmcdskgzh-io'
         }        
         response  = requests.get(ENDPOINT, params=parameters, headers=headers)
         if response.status_code != 200:
